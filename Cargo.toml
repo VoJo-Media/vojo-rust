@@ -1,0 +1,39 @@
+[package]
+name = "vojo"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+description = "Client for the Vojo API: proof that your ads actually played on digital out-of-home screens."
+license = "MIT"
+repository = "https://github.com/VoJo-Media/vojo-rust"
+readme = "README.md"
+keywords = ["vojo", "dooh", "advertising", "api", "webhooks"]
+categories = ["api-bindings", "web-programming::http-client"]
+# Pre-1.0. Not published until Vojo decides to.
+publish = false
+
+[features]
+default = ["rustls-tls"]
+# TLS for the built-in HTTP client. With neither, pass your own to ClientBuilder::http_client.
+rustls-tls = ["reqwest/rustls-tls"]
+native-tls = ["reqwest/native-tls"]
+# vojo::blocking, a client for code that is not async.
+blocking = ["tokio/rt", "tokio/net"]
+
+[dependencies]
+getrandom = "0.2"
+reqwest = { version = "0.12", default-features = false, optional = true }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+tokio = { version = "1", features = ["time"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "test-util"] }
+
+[[example]]
+name = "blocking"
+required-features = ["blocking"]
+
+[package.metadata.docs.rs]
+all-features = true
